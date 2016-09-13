@@ -1,0 +1,12 @@
+Package: RTutorCarbonLeakage
+Type: Package
+Title: RTutor problem set Optimized ndustry compensation under the threat of carbon leakage
+Version: 0.1
+Date: 2016-11-09
+Author: Benjamin Lux
+Maintainer: Benjamin Lux <benjamin.lux@uni-ulm.de>
+Description: RTutor problem set replicating the findings of the paper Industry Compensation under Relocation Risk: A Firm-Level Analysis of the EU Emissions Trading Scheme by Ralf Martin, Mirabelle Muuls, Laure B. de Preux and Ulrich J. Wagner (2014)
+License: Not yet licensed by the author. The default suggestion for licensing is
+	Problem set content: Creative Commons (CC BY-SA)
+	Package code: GPL >= 2.0
+Depends: RTutor, ggplot2, dplyr, tidyr, foreign, yaml, magrittr, leaflet, pracma, regtools, yarrr

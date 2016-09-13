@@ -1,0 +1,20 @@
+orgvar | var | descr
+
+sec4dig | sec4dig | Sector specification on the four-digit level according to NACE. 
+|n_install| Number of installations in the firm
+countid|firm_sec| Share of this firm in a given sector when the firm operates in more than one sector 
+fimpact_score_clean| vs| Vulnerability score based on interviews. Ranges from 1 to 5.
+country | country | Country (Belgium, France, Germany, Hungary, Poland, United Kingdom) in which firm is located.
+beta0 | beta0 | First parameter to specify a firm's relocation probability function, that follows a logistic distribution.
+beta1 | beta1 | Second parameter to specify a firm's relocation probability function, that follows a logistic distribution.
+allo | grandf | Average number of batches of free permits allocated to a firm between 2005 and 2008 under ‚grandfathering‘. Data was obtained from CITL.
+bench | bench | Average number of batches of free permits allocated to a firm under ‚benchmarking‘. Data was obtained from National Implementation Measures (NIMs). 
+emp | emp | Average number of employees of a firm between 2007 and 2008. Data was obtained from ORBIS.
+co2 | co2 | Average amount of verified CO2 emissions (in tons) of a firm between 2005 and 2008. Data obtained from CITL. 
+vv | carb_int | Sectoral (4 digit) carbon intensity. Data obtained from EUROSTAT and CITL (2009).
+tt | trade_int | Sectoral (4 digit) trade intensity. Data obtained from EUROSTAT and CITL (2009).
+|turn| Firm’s turnover in 2007. Data obtained from .
+|trade_int_less | Sectoral trade intensity with less-develops countries.
+mcetsdig|ets_sector| Industrial sector (2 or 3 digit) as within the EU ETS.
+ETS_id | its | Dummy indicating if a firm participates in the EU ETS (1) or not (0). 
+ETS_id | ets | Dummy indicating whether a firm participates in the EU ETS (1) or not (0).
