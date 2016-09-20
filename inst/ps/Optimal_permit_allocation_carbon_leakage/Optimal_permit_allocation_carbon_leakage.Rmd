@@ -169,7 +169,7 @@ Each of these groups can be visualized by a rectangle in our graph.
 #   geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = 30, ymax = Inf),   # A
 #             fill = "#FBE814", alpha = 0.009) +
 #   geom_rect(aes(xmin = ???, xmax = ???, ymin = ???, ymax = ???),   # B
-#             fill = "#0072B2", alpha = 0.009) +
+#             fill = "#0072B2", alpha = 0.005) +
 #   geom_rect(aes(xmin = ???, xmax = ???, ymin = ???, ymax = ???),   # C
 #             fill = "#D73200", alpha = 0.009) +
 #   annotate("text", x=c(95, 95,20), y=c(40,25,25), 
@@ -660,7 +660,7 @@ In a next step we want to determine the expected number of jobs at risk of reloc
 
 Throughout this problem set we have already used a lot of different functions. Some of them were part of base *R*, like the `log()` function we used above, others were written by third parties and stored in special packages, like the `ggplot()` function from the *ggplot2* package we used extensively in the last exercises. In *R* you have however the possibility to write your own functions as well. This is especially handy if non of the predefined functions suits your requirements and you want to do the same calculation or data manipulation multiple times. Since we will calculate the contribution to aggregate relocation risk for many different firms and batch allocations, it is a good idea to write a function which evaluates equation (3.1.8). 
 
-info("Functions in *R*") # Run this line (Strg-Enter) to show info
+info("Functions in R") # Run this line (Strg-Enter) to show info
 
 Since all the information on firms we want to analyze using the model above are stored in data frames, our self-written function needs to adapt to the structure of these data frames. To apply this function to our example firm, its characteristics need to be stored in a similarly designed data frame.
 
