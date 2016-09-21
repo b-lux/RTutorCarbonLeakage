@@ -18,12 +18,12 @@ Author:  Benjamin Lux
 <style>img {width: 100%;}</style>
 
 
-In their paper **"Industry Compensation under Relocation Risk: A Firm-Level Analysis of the EU Emissions Trading Scheme"** Ralf Martin, Mirabelle Muûls, Laure B. de Preux and Ulrich J. Wagner (2014) analyzed how to distribute free of charge $CO_2$ emission certificates optimally among firms to encounter the threat of *carbon leakage*. In the following I will refer to this paper by *Martin et al.* The aim of this interactive *R* tutorial is to reproduce and discuss their findings.  
+In their paper **"Industry Compensation under Relocation Risk: A Firm-Level Analysis of the EU Emissions Trading Scheme"** Ralf Martin, Mirabelle Muûls, Laure B. de Preux and Ulrich J. Wagner (2014) analyzed how to distribute free of charge $CO_2$ emission certificates optimally among firms to encounter the threat of *carbon leakage*. In the following, I will refer to this paper by *Martin et al.* The aim of this interactive *R* tutorial is to reproduce and discuss their findings.  
 The [website](https://www.aeaweb.org/articles.php?doi=10.1257/aer.104.8.2482) of the *American Economic Association* provides the original paper and corresponding data. This RTutor problem can be accessed [here](https://github.com/b-lux/RTutorCarbonLeakage).
 
 ## Exercise Overview
 
-The main interest of Martin et al.'s paper was to find an optimal solution to a problem called *carbon leakage* that emerges as $CO_2$ emissions are imposed with a price and an overall cap under the *European Union Emissions Trading System* (EU ETS). Firms might shift their greenhouse gas (GHG) emissions to unregulated places outside the European Union (EU) in order to avoid associated costs. This phenomenon is referred to as *carbon leakage* (Commission Decision 2010/2/EU). There are two main problems with this response to putting a price tag on carbon emissions. First of all, it weakens the effectiveness of the environmental regulation. Since $CO_2$ is a global public bad, there is no advantage in a regulation trying to reduce overall contribution to global warming, but in reality only shifting emissions somewhere else. Second, Martin et al. argued that it might have a bad economic impact on the EU as well, since relocating emissions goes hand in hand with relocating jobs and taxable profits. Policy measures in place offer compensation in form of free permits to firms that are either carbon intensive and/or trade exposed in order to prevent them from relocation. Martin et al. showed that this approach of compensating the firms is less efficient than their own proposal of an alternative compensation rule. They found that the aggregate amount of jobs at risk to be relocated can be reduced by more than half without extending the compensation level. In the course of this optimization the authors used data on firms' vulnerability to carbon pricing that usually is not available to policy-makers. Therefore they based their compensation rule in a next step on publicly observable firm data. Even with these easy compensation rules the risk of job relocation can be substantially reduced.    
+The main interest of Martin et al.'s paper was to find an optimal solution to a problem called *carbon leakage* that emerges as $CO_2$ emissions are imposed with a price and an overall cap under the *European Union Emissions Trading System* (EU ETS). Firms might shift their greenhouse gas (GHG) emissions to unregulated places outside the European Union (EU) in order to avoid associated costs. This phenomenon is referred to as *carbon leakage* (Commission Decision 2010/2/EU). There are two main problems with this response to putting a price tag on carbon emissions. First of all, it weakens the effectiveness of the environmental regulation. Since $CO_2$ is a global public bad, there is no advantage in a regulation trying to reduce overall contribution to global warming, but in reality only shifting emissions somewhere else. Second, Martin et al. argued that it might have a bad economic impact on the EU as well, since relocating emissions goes hand in hand with relocating jobs and taxable profits. Policy measures in place offer compensation in form of free permits to firms that are either carbon intensive and/or trade exposed in order to prevent them from relocation. Martin et al. showed that this approach of compensating the firms is less efficient than their own proposal of an alternative compensation rule. They found that the aggregate amount of jobs at risk to be relocated can be reduced by more than half without extending the compensation level. In the course of this optimization the authors used data on firms' vulnerability to carbon pricing that usually is not available to policy-makers. Therefore, they based their compensation rule in a next step on publicly observable firm data. Even with these easy compensation rules the risk of job relocation can be substantially reduced.    
 
 **Structure of the problemset:**
 
@@ -36,7 +36,7 @@ In this exercise we will analyze the prevailing compensation scheme in the EU ET
 This exercise introduces Martin et al.'s *vulnerability score*, an interview-based measure of a firm's vulnerability to carbon pricing. We will encounter new plotting techniques and a short introduction to regression analysis in *R*.
 
 * **Exercise 3 Optimal Allocation**  
-Exercise 3 develops and evaluates Martin et al.'s full normative model on an optimal compensation scheme. Meanwhile we will learn how to write our own functions in *R* and make further use of the skills on data manipulation and plotting which was acquired previously.
+Exercise 3 develops and evaluates Martin et al.'s full normative model on an optimal compensation scheme. Meanwhile, we will learn how to write our own functions in *R* and make further use of the skills on data manipulation and plotting which was acquired previously.
 
 * **Exercise 4 Feasible Optimal Allocation**  
 This exercise develops and evaluates simple compensation schemes based on publicly observable firm characteristics. It gives us the possibility to learn the application of the built-in optimization algorithms in *R*. 
@@ -58,7 +58,7 @@ As visualized in Figure 1.1, the installation of the EU ETS was realized in diff
 
 info("Grandfathering") # Run this line (Strg-Enter) to show info
 
-Trading phase III lasting from 2013 until 2020 is characterized by the gradual transition from *grandfathering* towards *full auctioning* as the default allocation principle (European Commission, 2016). The auctioning of permits fits the *polluter-pays* principle, a corner stone of environmental policy-making in the EU (Directive 2004/35/CE). Martin et al. noted that the principle of auctioning constitutes transfer payments from polluters to governments and taxpayers. The transition is realized by a *benchmarking*-approach (Commission Decision 2011/87/EU). The amount of free permits allocated to firms is now based on product-related benchmarks and decreases gradually over time. As firms receive less pollution allowances for free step by step, they need to acquire missing permits in auctions or reduce their carbon emissions altogether. It is envisioned that by 2020 the share of free permits is reduced to only 30% of the respective benchmark (European Commission, 2016). See the *info*-box below for more detailed information on benchmarking.
+Trading phase III, lasting from 2013 until 2020, is characterized by the gradual transition from *grandfathering* towards *full auctioning* as the default allocation principle (European Commission, 2016). The auctioning of permits fits the *polluter-pays* principle, a corner stone of environmental policy-making in the EU (Directive 2004/35/CE). Martin et al. noted that the principle of auctioning constitutes transfer payments from polluters to governments and taxpayers. The transition is realized by a *benchmarking*-approach (Commission Decision 2011/87/EU). The amount of free permits allocated to firms is now based on product-related benchmarks and decreases gradually over time. As firms receive less pollution allowances for free step by step, they need to acquire missing permits in auctions or reduce their carbon emissions altogether. It is envisioned that by 2020 the share of free permits is reduced to only 30% of the respective benchmark (European Commission, 2016). See the *info*-box below for more detailed information on benchmarking.
 
 *Note: The EU ETS has constantly increased in terms of geography, sectors and GHGs since its beginning in 2005. In the course of this problem set we are going to concentrate on manufacturing industries and $CO_2$ emissions, since these are both the most important and most interesting topics.*
 
@@ -69,11 +69,11 @@ info("Benchmarking") # Run this line (Strg-Enter) to show info
 If you want to find out more about the development of the EU ETS have a look at the ETS Summer University. The European Commission has set up a comprehensive online course on the background and design of Emission Trading Systems, [here](https://ec.europa.eu/clima/policies/ets/ets-summer-university/content/ets-e-learning-online-course).
 
 ### ii) The Carbon Leakage Decision
-It comes with no surprise that carbon intensive industries complained that the increased cost resulting from full auctioning of emission permits were a competitive disadvantage compared to competitors in less regulated jurisdictions. This implies the threat that companies could transfer their production to countries imposing laxer emission standards to save carbon costs. Since carbon emissions are an "international externality" (Markusen, 1975) the European Commission (EC) recognized that this policy "could lead to an increase in greenhouse gas emissions in third countries where industry would not be subject to comparable carbon constraints (‘carbon leakage’) and undermine the environmental integrity and benefit of actions by the Union” (Commission Decision 2010/2/EU, p.1). Moreover it costs jobs and taxable profits in the EU. The EC gave in to this threat and guaranteed 100% of benchmark allocations at no cost to sectors deemed to be at risk of carbon leakage in the *Carbon Leakage Decision* (Commission Decision 2010/2/EU). According to this Commission Decision *carbon intensity* (CI) and *trade intensity* (TI) are the relevant quantities that determine a sector's leakage risk. Have a look on the next *info*-box for a formal definition of these terms. Based on these measures the EC defined thresholds to determine sectors or sub-sectors to be exempt from permit auctioning.
+It comes with no surprise that carbon intensive industries complained that the increased cost resulting from full auctioning of emission permits were a competitive disadvantage compared to competitors in less regulated jurisdictions. This implies the threat that companies could transfer their production to countries imposing laxer emission standards to save carbon costs. Since carbon emissions are an "international externality" (Markusen, 1975) the European Commission (EC) recognized that this policy "could lead to an increase in greenhouse gas emissions in third countries where industry would not be subject to comparable carbon constraints (‘carbon leakage’) and undermine the environmental integrity and benefit of actions by the Union” (Commission Decision 2010/2/EU, p.1). Moreover, it costs jobs and taxable profits in the EU. The EC gave in to this threat and guaranteed 100% of benchmark allocations at no cost to sectors deemed to be at risk of carbon leakage in the *Carbon Leakage Decision* (Commission Decision 2010/2/EU). According to this Commission Decision *carbon intensity* (CI) and *trade intensity* (TI) are the relevant quantities that determine a sector's leakage risk. Have a look at the next *info*-box for a formal definition of these terms. Based on these measures the EC defined thresholds to determine sectors or sub-sectors to be exempt from permit auctioning.
 
 info("Carbon and Trade Intensity") # Run this line (Strg-Enter) to show info
 
-In the following we are using firm-level data to visualize the exemption criteria established under the *Carbon Leakage Decision*. This will help to understand and to analyze the policy measures in place to reduce the relocation risk. 
+In the following, we are using firm-level data to visualize the exemption criteria established under the *Carbon Leakage Decision*. This will help to understand and to analyze the policy measures in place to reduce the relocation risk. 
 
 All the data frames being used throughout this problem set are contained in a folder called *data*. In order to work with a data frame it needs to be loaded into the workspace of our problem set.     
 
@@ -85,13 +85,13 @@ firm.data = read.table("data/firm.data")
 head(firm.data)
 ```
 
-This data set was prepared beforehand for the purpose of this exercise to start quickly with some interesting graphs. We will get to know the tools being used in the preparation process in the course of this and following exercises. The interested reader is referred to the footnote of this exercise to see the data preparation code. In the data set each row displays information on one firm, e.g. to which sector it belongs, its carbon or trade intensity or its number of employees. To have a look on the whole data set click on the *data*-button above the command window. More detailed information on the variables and the data frame are given in the *info*-box below. Short variable descriptions are available by hovering over the variable names with your cursor, too.
+This data set was prepared beforehand for the purpose of this exercise to start quickly with some interesting graphs. We will get to know the tools being used in the preparation process in the course of this and following exercises. The interested reader is referred to the footnote of this exercise to see the data preparation code. In the data set each row displays information on one firm, e.g. to which sector it belongs, its carbon or trade intensity or its number of employees. To have a look at the whole data set click on the *data*-button above the command window. More detailed information on the variables and the data frame are given in the *info*-box below. Short variable descriptions are available by hovering over the variable names with your cursor, too.
 
 info("firm.data") # Run this line (Strg-Enter) to show info
 
 info("NACE") # Run this line (Strg-Enter) to show info
 
-First, we will take an overview of how sectors (NACE four-digit) relate to the EC's definitions of carbon and trade intensity. Therefore we need to transform the firm-level data into sectoral data. When it comes to data manipulation the *dplyr* package is a good choice. It is powerful and intuitive to read and write. To aggregate information on the sector level we will use a combination of two commands that we will encounter quite frequently: `group_by()` and `summarize()`.
+First, we will take an overview of how sectors (NACE four-digit) relate to the EC's definitions of carbon and trade intensity. Therefore, we need to transform the firm-level data into sectoral data. When it comes to data manipulation the *dplyr* package is a good choice. It is powerful and intuitive to read and write. To aggregate information on the sector level we will use a combination of two commands that we will encounter quite frequently: `group_by()` and `summarize()`.
 
 info("group_by(), summarize() and the 'pipe' ") # Run this line (Strg-Enter) to show info
 
@@ -184,7 +184,7 @@ Have a closer look on Figure 1.3 and answer the following question:
 
 We can make three interesting observations in Figure 1.3: First, the number of exempt sectors and installations constitutes a relatively large share of the sample. Second, the comparison of the number of circles in the different rectangles reveals that most of the sectors exempted from full auctioning by the EC belong to category $B$. Third, most of these category $B$ sectors have a carbon intensity well below 5% and can therefore not be considered as carbon intensive.   
 
-These observations incentivized Martin et al. to dig deeper and have a closer look on the different exempted groups. Following their observations, they split exemption category $B$ into low (CI < 5%) and moderate (5% < CI < 30%) carbon intensity sub-categories. In a next step we add a new variable to our data frame specifying the exemption category each sector belongs to. The *dplyr* package provides the required tools: `mutate()` and `filter()`.
+These observations incentivized Martin et al. to dig deeper and have a closer look on the different exempted groups. Following their observations, they split exemption category $B$ into low (CI < 5%) and moderate (5% < CI < 30%) carbon intensity sub-categories. In a next step, we add a new variable to our data frame specifying the exemption category each sector belongs to. The *dplyr* package provides the required tools: `mutate()` and `filter()`.
 
 info("mutate() and filter()") # Run this line (Strg-Enter) to show info
 
@@ -201,7 +201,7 @@ exemption.data = fig1.2.data %>%
   filter(!is.na(exempt_group))
 ```
 
-To learn more about the structure of the different exemption categories, we want to know how firms, employees and $CO_2$ emissions are shared out between them. Therefore we calculate the share each sector takes in terms of firms, employees and $CO_2$ emissions. Instead of adding new variables to the data frame, we only want to keep the new shares and the exemption category. This can be done with `transmute()` from the *dplyr* package. The syntactic structure to call `transmute()` is equal to the one used for `mutate()`. 
+To learn more about the structure of the different exemption categories, we want to know how firms, employees and $CO_2$ emissions are shared out between them. Therefore, we calculate the share each sector takes in terms of firms, employees and $CO_2$ emissions. Instead of adding new variables to the data frame, we only want to keep the new shares and the exemption category. This can be done with `transmute()` from the *dplyr* package. The syntactic structure to call `transmute()` is equal to the one used for `mutate()`. 
 
 **Task:** Click *check* to create a data frame `share.data` which stores the exemption categories and the share of firms, employees and emissions each sector takes in these categories.
 ```{r "1_Current_Allocation__14"}
@@ -330,7 +330,7 @@ Interviewers translated the answers to this question into the socalled *vulnerab
 ![Asignment of interview answers to the VS.](figure/vulnerability_score.png)
 **Figure 2.1:** VS mapping. Source: Author's own graph.
 
-In the following we want to analyze how managers responded to this question. Therefore we need to load data containing the interview results.
+In the following, we want to analyze how managers responded to this question. Therefore, we need to load data containing the interview results.
 
 **Task:** Use the `read.table()` command to load the data frame *vs.data* and assign it to a new variable `vs.data`. Remember that data frames are stored in the directory in a folder called *data*. Display the first entries of `vs.data` using the `head()` command.
 ```{r "2_The_Vulnerability_"}
@@ -341,7 +341,7 @@ Each row contains the information on one firm. Besides the VS, the data set cont
 info("vs.data") # Run this line (Strg-Enter) to show info
 
 ### ii) Mapping of the VS
-A closer look on the chosen mapping from managers' relocation expectations into the VS, illustrated in Figure 2.1, reveals that small relocation probabilities are covered by the score in more detail than high relocation probabilities. Namely the first two fifths of the score cover relocation probabilities from zero to 10%, while the other three fifths of the score cover the remaining 90%. This concentration on low relocation probabilities is justifiable if overall relocation probabilities in response to carbon pricing are low. Let us therefore have a look on the distribution of the VS in a histogram.
+A closer look on the chosen mapping from managers' relocation expectations into the VS, illustrated in Figure 2.1, reveals that small relocation probabilities are covered by the score in more detail than high relocation probabilities. Namely, the first two fifths of the score cover relocation probabilities from zero to 10%, while the other three fifths of the score cover the remaining 90%. This concentration on low relocation probabilities is justifiable if overall relocation probabilities in response to carbon pricing are low. Let us therefore have a look at the distribution of the VS in a histogram.
 
 **Task:** Hit the *check*-button to generate a graph that shows the relative frequency of different score realizations.
 ```{r "2_The_Vulnerability___2"}
@@ -376,14 +376,14 @@ Let us have a look at further descriptive statistics of this VS.
 
 As already expected after assessing the histogram, the mean VS across all firms is rather low, namely 1.87 with a standard deviation of 1.29.
 
-You may have noted that the data frame `vs.data` contains a variable `ets`. This variable indicates whether the interviewed firm takes part in the EU ETS or not. Martin et al. conducted interviews with both groups. In a next step we want to know if firm managers have different expectations on the relocation behavior of their company depending on their EU ETS participation status. 
+You may have noted that the data frame `vs.data` contains a variable `ets`. This variable indicates whether the interviewed firm takes part in the EU ETS or not. Martin et al. conducted interviews with both groups. In a next step, we want to know if firm managers have different expectations on the relocation behavior of their company depending on their EU ETS participation status. 
 
 **Task:** Use the commands `summarize()` and `group_by` to calculate the VS group means of ETS and non-ETS firms. 
 ```{r "2_The_Vulnerability___4"}
 
 ```
 
-Notably, the mean VS of non-ETS firms is lower than that of ETS firms (1.49 versus 2.15). In a next step we want to know if this observed difference in means is statistically significant. If certain conditions are met, a two sample t-test is the most powerful tool to test the null hypothesis stating that the sample means of the two groups are equal. One of these conditions requires that the two samples being compared follow a normal distribution. Figure 2.2 reveals that the normality assumption is most likely violated by the samples. To avoid misleading results, we will therefore conduct a non-parametric Wilcoxon-Mann-Whitney test. This test examines whether the sample distributions of the two groups are identical (Sheskin, 2007, chapter Test 12). Thereby, it does not make assumptions about the specific underlying distribution, especially it does not have to be normal. It tests the following null hypothesis: 
+Notably, the mean VS of non-ETS firms is lower than that of ETS firms (1.49 versus 2.15). In a next step, we want to know if this observed difference in means is statistically significant. If certain conditions are met, a two sample t-test is the most powerful tool to test the null hypothesis stating that the sample means of the two groups are equal. One of these conditions requires that the two samples being compared follow a normal distribution. Figure 2.2 reveals that the normality assumption is most likely violated by the samples. To avoid misleading results, we will therefore conduct a non-parametric Wilcoxon-Mann-Whitney test. This test examines whether the sample distributions of the two groups are identical (Sheskin, 2007, chapter Test 12). Thereby, it does not make assumptions about the specific underlying distribution, especially it does not have to be normal. It tests the following null hypothesis: 
 
 $H_0$: The distributions of VS for the two groups are identical.
 
@@ -393,13 +393,13 @@ $H_0$: The distributions of VS for the two groups are identical.
 wilcox.test(formula = vs~ets, data = vs.data)
 ```
 
-The Wilcoxon-Mann-Whitney test reports a p-value of $p=1.5\cdot 10^{-9}$. Thus we can confidently dismiss the null hypothesis that the distributions of VS of ETS and non-ETS firms are identical and conclude that there is true difference in the mean VS. As one might expect, ETS firm managers assume more detrimental effects caused by carbon pricing than those of the reference group. In the optimizations we are going to conduct in Exercises 3 and 4, we are therefore going to concentrate on ETS firms only. 
+The Wilcoxon-Mann-Whitney test reports a p-value of $p=1.5\cdot 10^{-9}$. Thus, we can confidently dismiss the null hypothesis that the distributions of VS of ETS and non-ETS firms are identical and conclude that there is true difference in the mean VS. As one might expect, ETS firm managers assume more detrimental effects caused by carbon pricing than those of the reference group. In the optimizations we are going to conduct in Exercises 3 and 4, we are therefore going to concentrate on ETS firms only. 
 
 Since the EU ETS is a European trading system, we are interested in managers' expectations concerning carbon pricing across different countries. A very nice tool to receive meaningful information on different groups in a sample is the `pirateplot()` function in the *yarrr* package.
 
 info("pirateplot()") # Run this line (Strg-Enter) to show info
 
-**Task:** Have a look on the provided example. It creates a plot showing the distribution of the VS depending on the country where it was obtained. Hit the *check*-button to create a first pirateplot. 
+**Task:** Have a look at the provided example. It creates a plot showing the distribution of the VS depending on the country where it was obtained. Hit the *check*-button to create a first pirateplot. 
 ```{r "2_The_Vulnerability___6"}
 # Load the required package 'yarrr' from the library
 library("yarrr")
@@ -420,9 +420,9 @@ In Figure 2.3, the horizontal lines indicate the mean with the surrounding boxes
 
 #! addon__quiz__Vulnerability score across countries
 
-It is apparent that the mean VS of all countries is lower than 3. Moreover none of the 95% confidence intervals includes the score 3. This allows us to conclude that the risk of relocation due to carbon pricing is limited to less than 10% production outsourcing in all of the countries. The beans unveil that the distribution of scores is heavily skewed towards a score of 1 in all countries. 
+It is apparent that the mean VS of all countries is lower than 3. Moreover, none of the 95% confidence intervals includes the score 3. This allows us to conclude that the risk of relocation due to carbon pricing is limited to less than 10% production outsourcing in all of the countries. The beans unveil that the distribution of scores is heavily skewed towards a score of 1 in all countries. 
 
-In a next step we want to do a similar analysis concerning managers' relocation expectations in different industries. 
+In a next step, we want to do a similar analysis concerning managers' relocation expectations in different industries. 
 
 **Task:** Complete the code in the chunk below to create a second pirate plot, which displays the distribution of VS depending on the industry (`ets_sector`) where it was obtained.
 ```{r "2_The_Vulnerability___7"}
@@ -448,9 +448,9 @@ par(las = 2, mar = c(9.3,4.2,3,0))
 
 Figure 2.4 reveals that none of the sectors displays a severe vulnerability to carbon pricing. *Fuels*, *Glass*, *Iron and Steel*, and *Other Minerals* are the industries with the highest VS. Thereby, *Other Minerals* displays the highest score with a mean VS greater than 3 (3.4). Only in the cases of *Ceramics*, *Fuels*, *Glass*, and *Iron and Steel* the value 3 is included in the 95% confidence interval. We can therefore not rule out the risk that firms in these industries shift at least 10% of their production outside the EU. In all other industries the average VS is substantially lower than 3. In no industry can we observe that the 95% confidence interval of average scores include complete relocation. We may therefore conclude that chances are low that an average firm closes down completely and moves to an unregulated country as a consequence of carbon pricing. 
 
-Overall, the industry a firm belongs to has a higher influence on the vulnerability to carbon pricing than the the country of origin. The country means range between 1.5 (Hungary) and 2.1 (Germany) and the differences between the countries appear to be rather minor, whereas industry means range between 1.26 (*Machinery & Optics*) (neglecting *Construction* since there are only three firms in the sample) and 3.4 (*Other Minerals*). Therefore there is a higher variation in vulnerability between sectors than between countries. 
+Overall, the industry a firm belongs to has a higher influence on the vulnerability to carbon pricing than the the country of origin. The country means range between 1.5 (Hungary) and 2.1 (Germany) and the differences between the countries appear to be rather minor, whereas industry means range between 1.26 (*Machinery & Optics*) (neglecting *Construction* since there are only three firms in the sample) and 3.4 (*Other Minerals*). Therefore, there is a higher variation in vulnerability between sectors than between countries. 
 
-The raw data and the smoothed densities reveal that in the identified most vulnerable industries the VS are rather evenly distributed. Consequently firms in  *Fuels*, *Glass*, *Iron and Steel* and *Other Minerals* can be considered as heterogeneous with respect to their vulnerability to carbon pricing. Therefore the EU's approach of basing exemption rules on sector specific measures like carbon or trade intensity may be inefficient.
+The raw data and the smoothed densities reveal that in the identified most vulnerable industries the VS are rather evenly distributed. Consequently firms in  *Fuels*, *Glass*, *Iron and Steel* and *Other Minerals* can be considered as heterogeneous with respect to their vulnerability to carbon pricing. Therefore, the EU's approach of basing exemption rules on sector specific measures like carbon or trade intensity may be inefficient.
 
 ### iii) How does the VS relate to carbon and trade intensity?
 The VS introduced above claims to be a direct measure of a firm's vulnerability to carbon pricing. Martin et al. (2014b) used it therefore in an accompanying paper as a tool to test the validity and accuracy of the EC's exemption criteria established in the Carbon Leakage Decision. Their basic idea was that TI and CI should be positively correlated with the VS to be good proxies for a firm's relocation risk. They used a variant of the following regression equation to test this hypothesis:
@@ -556,7 +556,7 @@ vs.data = basic.data %>%
 In Exercise 1 we discussed that by putting a price tag on $CO_2$ emissions, the EU faced the dilemma of introducing an effective environmental policy on the one hand and protecting domestic industries against the detrimental economic implications of this policy on the other hand. If firms decided to relocate to non-regulated countries in response to these detrimental implications, this would cause damage to both the overall goal to reduce carbon emissions and the domestic economy. In the course of this problem set we will follow Martin et al.'s approach and focus on two concrete variants of relocation damage: Where applicable, we will differentiate between the *amount of jobs lost* in the EU and *the amount of leaked $CO_2$ emissions* caused by relocation. As seen in Exercise 1, the EC decided to allocate a fixed amount of pollution permits to firms for free to encounter the relocation threat. In this exercise we want to develop Martin et al.'s theoretical framework on how to distribute these free permits in order to minimize the aggregate expected damage of relocation.
 
 ### i) A single firm's contribution to aggregate relocation risk
-Martin et al. based their model on the relocation decisions of individual firms located in an ETS-country. They assumed that these relocation decisions depend on the profit impact of carbon pricing. Therefore they described the profit $\pi_i (p,q_i)$ of such a firm $i$ as a function of the permit price $p$ and the number of free permits $q_i$ it receives. Since the EU ETS is a cap-and-trade system we can consider the overall amount of pollution permits as exogenously fixed. The first person to develop a theoretical model for permit prices under these premises was Montgomery (1972). He found that permit trading reduces emissions cost-optimally and that permit prices are equal to firms' marginal abatement costs in the optimum. In the course of their model Martin et al. assumed the overall distribution of firms' abatement costs to be constant. As a consequence the permit price $p$ does not change and can be ignored in the profit function for better legibility: $\pi_i (q_i)$. 
+Martin et al. based their model on the relocation decisions of individual firms located in an ETS-country. They assumed that these relocation decisions depend on the profit impact of carbon pricing. Therefore, they described the profit $\pi_i (p,q_i)$ of such a firm $i$ as a function of the permit price $p$ and the number of free permits $q_i$ it receives. Since the EU ETS is a cap-and-trade system we can consider the overall amount of pollution permits as exogenously fixed. The first person to develop a theoretical model for permit prices under these premises was Montgomery (1972). He found that permit trading reduces emissions cost-optimally and that permit prices are equal to firms' marginal abatement costs in the optimum. In the course of their model Martin et al. assumed the overall distribution of firms' abatement costs to be constant. As a consequence the permit price $p$ does not change and can be ignored in the profit function for better legibility: $\pi_i (q_i)$. 
 
 Do you expect the partial derivative of a firm's profit with respect to the number of free permits $\frac{\partial \pi_i (q_i)}{\partial q_i}$ to be positive or negative?  
 #! addon__quiz__Profit
@@ -582,7 +582,7 @@ $$
 Remember that $F_i[-\pi_i(q_i)]$ was assumed to be a continuously differentiable cumulative distribution function. Do you think its first derivative with respect to the number of free permits $\frac{\partial F_i[- \pi_i (q_i)]}{\partial q_i}$ is positive or negative?
 #! addon__quiz__Marginal relocation probability
 
-Applying the chain rule reveals that an additional free permit always results in a marginal reduction in firm $i$'s relocation probability. In consequence, the permit constraint of (3.1.2) holds with equality. If you are interested in the proof have a look on the next *info*-box. 
+Applying the chain rule reveals that an additional free permit always results in a marginal reduction in firm $i$'s relocation probability. In consequence, the permit constraint of (3.1.2) holds with equality. If you are interested in the proof have a look at the next *info*-box. 
 
 info("Proof of binding constraint") # Run this line (Strg-Enter) to show info
 The shadow price $\lambda^*$ in this minimization problem tells us by how much the optimal value of aggregate relocation risk increases if the total number of free permits is decreased by one. Following our previous findings on the first derivative of the relocation probability function $F_i[-\pi_i(q_i)]$, we can state that the shadow price is positive. We can further write the first order condition for an interior solution as     
@@ -601,7 +601,7 @@ So far we have made very broad assumptions on the relocation probability functio
 $$
 \pi_i (q_i) = \delta_{0i}+\delta_{1i}q_i.\qquad (3.1.4)
 $$ 
-Further they assume that the net cost of relocation $\varepsilon_i$ follows a logistic distribution. We can therefore specify firm $i$'s relocation probability to be
+Further, they assume that the net cost of relocation $\varepsilon_i$ follows a logistic distribution. We can therefore specify firm $i$'s relocation probability to be
 
 $$
 \mathrm{Pr}(y_i = 1|q_i) = F_i (-\pi_i (q_i)) = \frac{1}{1+\exp(\beta_{0i}+\beta_{1i}q_i)}.\qquad (3.1.5)
@@ -618,7 +618,7 @@ Rearranging this equation yields
 $$
 \longrightarrow\quad  \beta_{0i} = \log \left(\frac{1-\mathrm{Pr}(y_i = 1|q_i = 0)}{\mathrm{Pr}(y_i = 1|q_i = 0)} \right). \qquad (3.1.6)
 $$
-Have a look on the exact mapping between the VS and relocation probabilities as introduced in Exercise 2 in the *info*-box below.
+Have a look at the exact mapping between the VS and relocation probabilities as introduced in Exercise 2 in the *info*-box below.
 
 
 info("Mapping from relocation probabilities into the VS") # Run this line (Strg-Enter) to show info
@@ -632,13 +632,13 @@ $$
 \longrightarrow\quad  \beta_{1i} =\frac{1}{0.8\cdot co2_i}\left( \log \left(\frac{1-\mathrm{Pr}(y_i = 1|q_i = 0.8\cdot co2_i)}{\mathrm{Pr}(y_i = 1|q_i = 0.8\cdot co2_i)} \right)-\beta_{0i}\right).\qquad (3.1.7)
 $$
 
-Therefore firm $i$'s contribution to aggregate relocation risk is fully determined and we can rewrite equation (3.1.1). Besides substituting equation (3.1.5) into equation (3.1.1) we formally change the argument of the $risk_i$ function from permits $q_i$ to batches $b_i$. This accounts for the fact that not single emission permits $q_i$ are allocated to the firms, but rather batches $b_i$ comprising many permits (we will assume that one batch contains 15,000 permits, which allows the permit holder to emit 15,000 tons of $CO_2$). This substitution does not severely change the nature of the optimization problem, since batches $b_i$ are a linear transformation of permits $q_i$: 
+Therefore, firm $i$'s contribution to aggregate relocation risk is fully determined and we can rewrite equation (3.1.1). Besides substituting equation (3.1.5) into equation (3.1.1) we formally change the argument of the $risk_i$ function from permits $q_i$ to batches $b_i$. This accounts for the fact that not single emission permits $q_i$ are allocated to the firms, but rather batches $b_i$ comprising many permits (we will assume that one batch contains 15,000 permits, which allows the permit holder to emit 15,000 tons of $CO_2$). This substitution does not severely change the nature of the optimization problem, since batches $b_i$ are a linear transformation of permits $q_i$: 
 $$
 risk_i (b_i) = F_i(b_i) \cdot damage_i = \frac{1}{1+\exp (\beta_{0i} + \beta_{1i}\cdot batchsize\cdot b_i)} \cdot damage_i. \qquad (3.1.8)
 $$
 
 ### iv) Example and function design
-In the following we want to apply the equations we have developed to a real firm to make the theory more tangible. For that purpose I randomly selected one firm from our data base. The firm has the following characteristics:
+In the following, we want to apply the equations we have developed to a real firm to make the theory more tangible. For that purpose I randomly selected one firm from our data base. The firm has the following characteristics:
 
 * Vulnerability Score if no free permits exist: 5
 * Vulnerability Score if 80% of emissions are covered by free permits: 1
@@ -651,12 +651,12 @@ In the following we want to apply the equations we have developed to a real firm
 # beta1 = ???
 
 ```
-Now that we have calculated the parameters $\beta_0$ and $\beta_1$ for our example firm, we can specify its relocation probability function as
+Now, that we have calculated the parameters $\beta_0$ and $\beta_1$ for our example firm, we can specify its relocation probability function as
 $$
 F_{ex}(b_{ex}) = \frac{1}{1+\exp (-4.595 + 5.635\cdot 10^{-6}\cdot batchsize\cdot b_{ex})}.\qquad (3.1.9)
 $$
 
-In a next step we want to determine the expected number of jobs at risk of relocation if the example firm receives 20 batches of free permits. These 20 batches cover roughly 15% of that firm's $CO_2$ emissions. 
+In a next step, we want to determine the expected number of jobs at risk of relocation if the example firm receives 20 batches of free permits. These 20 batches cover roughly 15% of that firm's $CO_2$ emissions. 
 
 Throughout this problem set we have already used a lot of different functions. Some of them were part of base *R*, like the `log()` function we used above, others were written by third parties and stored in special packages, like the `ggplot()` function from the *ggplot2* package we used extensively in the last exercises. In *R* you have however the possibility to write your own functions as well. This is especially handy if non of the predefined functions suits your requirements and you want to do the same calculation or data manipulation multiple times. Since we will calculate the contribution to aggregate relocation risk for many different firms and batch allocations, it is a good idea to write a function which evaluates equation (3.1.8). 
 
@@ -674,7 +674,7 @@ firm.ex
 ```
 The data frame `firm.ex` contains all the necessary information on our example firm to evaluate equation (3.1.9).
 
-**Task:** Have a look on the next code chunk to see an example of how to define equation (3.1.8) as the function `risk()`. Hit the *check*-button to implement the function.
+**Task:** Have a look at the next code chunk to see an example of how to define equation (3.1.8) as the function `risk()`. Hit the *check*-button to implement the function.
 ```{r "3_1___Optimal_Alloca__3"}
 risk = function(data, b, damage){
   batchsize = 15000
@@ -794,7 +794,7 @@ To evaluate the marginal impact of one additional batch of free permits on a fir
 
 info("Further insights on the relocation probability function F") # Run this line (Strg-Enter) to show info
 
-In the following we want to develop a formal strategy to verify these considerations. This strategy is adapted from a comparable problem solved by Hillier and Lieberman (2001, chapter 11). 
+In the following, we want to develop a formal strategy to verify these considerations. This strategy is adapted from a comparable problem solved by Hillier and Lieberman (2001, chapter 11). 
 
 ## ii) Recursive problem formulation
 In order to minimize total job risk, three *interrelated decisions* have to be taken: How many batches $b_i$ shall be allocated to each of the three firms ($i=1,2,3$). In our solving algorithm the individual firms will be taken into account one after another. Introducing some dynamic programming terminology, we will refer to the three firms as the three *stages* of the problem. The initial order in which the firms are considered is not relevant. The interrelation emerges as each permit batch can be allocated to a firm only once. It feels natural to introduce another variable $rest_i$, which displays the number of batches left to remaining firms $(i,\dotsc,3)$. So, starting our allocation procedure at firm 1 there are still 5 batches of free permits available: $rest_1= 5$. However, as we move on to firms 2 and 3, $rest_i$ is just $5$ minus the number of batches allocated to preceding firms, so
@@ -809,12 +809,12 @@ Using some more dynamic programming terminology, we will call the six levels $(0
 
 Figure 3.2.1 shows a graphical representation of the problem we want to solve. It displays the amounts of batches left to remaining firms we have to take into consideration at each firm. The line segments show the possible allocation decisions as we move from one firm to another. The numbers associated to the line segments are the contributions to aggregate job risk, which belong to the respective allocation decision. These numbers are taken from matrix `Firm.risk`, that we calculated above.
 
-Considering this Figure 3.2.1, our task is to find the optimal path between the initial state (starting with firm 1 and 5 batches left for allocation) and the final state (after firm 3 and with zero remaining batches). The optimal path minimizes the sum of contributions to aggregate job risk along the path. In Exercise 3.1 we argued that all free permits shall be allocated to firms since an additional free permit always results in a marginal reduction in the probability of relocation. Therefore we have to end up in state 0.
+Considering this Figure 3.2.1, our task is to find the optimal path between the initial state (starting with firm 1 and 5 batches left for allocation) and the final state (after firm 3 and with zero remaining batches). The optimal path minimizes the sum of contributions to aggregate job risk along the path. In Exercise 3.1 we argued that all free permits shall be allocated to firms since an additional free permit always results in a marginal reduction in the probability of relocation. Therefore, we have to end up in state 0.
 
-So, let us have a look on one exemplary path to clarify the informative value of this graph:
+So, let us have a look at one exemplary path to clarify the informative value of this graph:
 #! addon__quiz__Example path
 
-If you could not answer the question have a look on the *info*-box *Example path*.
+If you could not answer the question have a look at the *info*-box *Example path*.
 
 info("Example path") # Run this line (Strg-Enter) to show info
 
@@ -831,11 +831,11 @@ info("Bellman equation of dual program") # Run this line (Strg-Enter) to show in
 info("Dynamic Programming") # Run this line (Strg-Enter) to show info
 
 ### iii) Solution procedure
-The recursive formulation of our problem (3.2.3) yields that we need to know $V_{i+1}^*$ to calculate $V_i^*$. Therefore it is straightforward to start with the last firm ($n=3$) in our sequence: 
+The recursive formulation of our problem (3.2.3) yields that we need to know $V_{i+1}^*$ to calculate $V_i^*$. Therefore, it is straightforward to start with the last firm ($n=3$) in our sequence: 
 $$
 V_3 ^* (rest_3) = \min_{0\leq b_i \leq rest_3} risk_3 (b_3).
 $$ 
-This equation can be understood as follows: Given that we have $rest_3$ batches of free permits available for allocation at the last firm, we allocate the amount of batches $b_3 \in (0,\cdots, rest_3)$ to this firm which yields the lowest expected risk $risk_3(b_3)$ at this firm. The values of $risk_3(b_3)$ are given in the last column of matrix `Firm.risk`. We have already argued that expected job risk is monotonically decreasing in the number of batches a firm receives. Therefore the optimal solution of this sub problem is to allocate all remaining batches $rest_3$ to firm 3: $b_3^* = rest_3$ and $V_3 ^* (rest_3) = risk_3 (rest_3)$. Since we do not know yet how many batches of free permits $rest_3$ contains, we have to consider all possible allocations.
+This equation can be understood as follows: Given that we have $rest_3$ batches of free permits available for allocation at the last firm, we allocate the amount of batches $b_3 \in (0,\cdots, rest_3)$ to this firm which yields the lowest expected risk $risk_3(b_3)$ at this firm. The values of $risk_3(b_3)$ are given in the last column of matrix `Firm.risk`. We have already argued that expected job risk is monotonically decreasing in the number of batches a firm receives. Therefore, the optimal solution of this sub problem is to allocate all remaining batches $rest_3$ to firm 3: $b_3^* = rest_3$ and $V_3 ^* (rest_3) = risk_3 (rest_3)$. Since we do not know yet how many batches of free permits $rest_3$ contains, we have to consider all possible allocations.
 
 **Task:** Create a vector `b.prime`, that stores all optimal batch-allocations to firm 3, and a vector `v.prime`, which contains corresponding contributions to aggregate job risk.
 
@@ -870,7 +870,7 @@ Which batch-allocation $b_2^*$ yields minimal expected job risk for $rest_2 = 2$
 #! addon__quiz__rest_2
 
 Comparing the different paths, we obtain the minimum $V_2 ^* =200$ by choosing $b_2^* = 0$.
-As we could end up in all other states of firm 2 (depending on the allocation decision at firm 1), similar calculations need to be done for all possible values of $rest_2 \in (0,\cdots,5)$. Have a look on Figure 3.2.1 again and answer the following question:
+As we could end up in all other states of firm 2 (depending on the allocation decision at firm 1), similar calculations need to be done for all possible values of $rest_2 \in (0,\cdots,5)$. Have a look at Figure 3.2.1 again and answer the following question:
 
 What is the optimal allocation of batches $b_2^*$ for $rest_2 = 3$?
 #! addon__quiz__rest_2_2
@@ -880,7 +880,7 @@ Conducting these calculations for all other possible states $rest_2$ yields the 
 ![path illustration](figure/algo_illustration_4.png)
 **Figure 3.2.3:** Evaluation of firm 2 at all possible states. Source: Adapted from Hillier and Lieberman (2001, p. 546).
 
-Figure 3.2.3 shows the evaluation $V_2$ of equation (3.2.3) for each possible allocation $b_2\in (0,\cdots,5)$ and rest-state $rest_2\in (0,\cdots,5)$. An additional column $V_2^*$ shows the minimal expected job risk depending on the state $rest_2$. Mathematically this is the row minimum. An additional column $b_2^*$ shows the associate batch allocation. In a next step we need to find a way for our program to generate this evaluation-matrix automatically. Following equation (3.2.3) it is helpful to decompose this matrix into a sum of two matrices.
+Figure 3.2.3 shows the evaluation $V_2$ of equation (3.2.3) for each possible allocation $b_2\in (0,\cdots,5)$ and rest-state $rest_2\in (0,\cdots,5)$. An additional column $V_2^*$ shows the minimal expected job risk depending on the state $rest_2$. Mathematically this is the row minimum. An additional column $b_2^*$ shows the associate batch allocation. In a next step, we need to find a way for our program to generate this evaluation-matrix automatically. Following equation (3.2.3) it is helpful to decompose this matrix into a sum of two matrices.
 
 * Matrix `R` contains the risk values for all states $rest_2$ of the firm that is currently considered ($n=2$).  
 * Matrix `V.old` contains the results of the previous iteration (firm 3), which are stored in in the vector `v.prime`. The diagonals of this matrix comprise identical values. Mathematically this is called a *toeplitz matrix*. 
@@ -891,7 +891,7 @@ By adding up these two matrices we receive an overall picture of all possible al
 
 info("Toeplitz() and upper.tri()") # Run this line (Strg-Enter) to show info
 
-**Task:** Have a look on the code provided in the chunk below. It calculates the matrix `V` as described above. Hit the *check*-button to execute the code.
+**Task:** Have a look at the code provided in the chunk below. It calculates the matrix `V` as described above. Hit the *check*-button to execute the code.
 ```{r "3_2_Optimal_Allocati__10"}
 # Load the required package 'pracma' from the library:
 library(pracma)
@@ -924,7 +924,7 @@ It is now time to take the last step backward and move to firm 1 ($n=1$). As dis
 
 info("Firm 1") # Run this line (Strg-Enter) to show info
 
-**Task:** Execute the two code chunks below, which contain all the relevant code fragments we used for firm 2, to suit firm 1. If you want to verify the results by hand, have a look on the previous *info*-box, where another graph and additional help is provided. 
+**Task:** Execute the two code chunks below, which contain all the relevant code fragments we used for firm 2, to suit firm 1. If you want to verify the results by hand, have a look at the previous *info*-box, where another graph and additional help is provided. 
 
 ```{r "3_2_Optimal_Allocati__13"}
 V.old = Toeplitz(v.prime, rep(1E20, times=no.batches+1))         
@@ -943,7 +943,7 @@ Allocation[,no.firms-2] = b.prime
 print(Allocation)
 ```
 
-Now, we have to perform a final step. We only need to walk through the decision tree (Figure 3.2.1) once more - taking the optimal path this time. Following equations (3.2.2) $rest_1=5$. Therefore the optimal allocation to firm 1 is stored in the first column and last row of matrix `Allocation`: $b_1^* =0$. Continuing with equation (3.2.2) $rest_2 = 5- 0= 5$. So the last row of column two in matrix `Allocation` yields the optimal allocation to firm 2: $b_2^* = 2$. This yields $rest_3 =5-2 =3$ and $b_3^* = 3$. This (0,2,3) allocation of batches of free permits to the three firms will yield an expected total job risk of $V_1^* =800.57$. This result can simply be withdrawn from the last entry in `v.prime`. Let us translate this final walk through the decision tree into *R* code. 
+Now, we have to perform a final step. We only need to walk through the decision tree (Figure 3.2.1) once more - taking the optimal path this time. Following equations (3.2.2) $rest_1=5$. Therefore, the optimal allocation to firm 1 is stored in the first column and last row of matrix `Allocation`: $b_1^* =0$. Continuing with equation (3.2.2) $rest_2 = 5- 0= 5$. So the last row of column two in matrix `Allocation` yields the optimal allocation to firm 2: $b_2^* = 2$. This yields $rest_3 =5-2 =3$ and $b_3^* = 3$. This (0,2,3) allocation of batches of free permits to the three firms will yield an expected total job risk of $V_1^* =800.57$. This result can simply be withdrawn from the last entry in `v.prime`. Let us translate this final walk through the decision tree into *R* code. 
 
 **Task:** Initialize the vectors `policy` and `value` which will store the optimal allocation and the corresponding contribution to aggregate job risk. Consequently, both vectors will have one entry for each firm. We will introduce a variable `rest` which equals `no.batches` in the beginning. Using a for-loop, we fill the vectors `policy` and `value` for each firm. Set the variable `vopt` to the optimal value of total relocation risk. Display `policy`, `value` and `vopt` in the end. The necessary code is already provided. Hit the *check*-button to execute it.
 ```{r "3_2_Optimal_Allocati__15"}
@@ -964,9 +964,9 @@ vopt
 ```
 
 ### iv) Summary
-Now that we know each single step of our optimization algorithm, it is time to summarize them in one little function `cake()` (the name of the function is referring to the *cake eating problem*, where this algorithm is originated (e.g. Adda and Cooper (2003)). This function takes a matrix `Firm.risk` as an argument and returns a vector `policy` containing the optimal batch allocations to each firm, a vector `value` containing the corresponding contributions to aggregate relocation risk for each firm, and the variable `vopt` containing the total relocation risk in the optimum.
+Now, that we know each single step of our optimization algorithm, it is time to summarize them in one little function `cake()` (the name of the function is referring to the *cake eating problem*, where this algorithm is originated (e.g. Adda and Cooper (2003)). This function takes a matrix `Firm.risk` as an argument and returns a vector `policy` containing the optimal batch allocations to each firm, a vector `value` containing the corresponding contributions to aggregate relocation risk for each firm, and the variable `vopt` containing the total relocation risk in the optimum.
 
-**Task:** Have a look on the function in the code chunk below and try to understand the generalizations that have been made. Press *check* to implement the function.
+**Task:** Have a look at the function in the code chunk below and try to understand the generalizations that have been made. Press *check* to implement the function.
 ```{r "3_2_Optimal_Allocati__16"}
 cake = function(Firm.risk){
    # Initialization 
@@ -1063,7 +1063,7 @@ actual.firm.risk %>% select(-beta0, -beta1) %>% slice(6)
 
 #! addon__quiz__Firm's expected job risk under benchmarking
 
-Applying Martin et al.'s model to the example firm above, it is expected that 53.3 out of 9665.5 total jobs are at risk to be relocated to an unregulated country, if all its emissions are covered by free permits under grandfathering. Under benchmarking the amount of free permit-batches is reduced to 1.75 batches on average. Therefore only 76.5% of this firm's $CO_2$ emissions are covered by free permits. In consequence, the number of expected jobs to be lost increases to 107. A similar analysis can be conducted on the leakage of $CO_2$ emissions.
+Applying Martin et al.'s model to the example firm above, it is expected that 53.3 out of 9665.5 total jobs are at risk to be relocated to an unregulated country, if all its emissions are covered by free permits under grandfathering. Under benchmarking the amount of free permit-batches is reduced to 1.75 batches on average. Therefore, only 76.5% of this firm's $CO_2$ emissions are covered by free permits. In consequence, the number of expected jobs to be lost increases to 107. A similar analysis can be conducted on the leakage of $CO_2$ emissions.
 
 Nevertheless, we are more interested in changes in total relocation risk, than in the behaviour of individual firms. Therefore, we sum up respective risk figures of individual firms in all scenarios. In order to put the different scenarios into perspective we calculate the percentage share of jobs at risk or $CO_2$ emissions at risk relative to total employment or emissions of all firms in the sample.
 
@@ -1098,7 +1098,7 @@ risk.result = data_frame(
 risk.result
 ```
 
-Before we start our analysis of the calculated measures we want to create a graphical illustration.
+Before we start our analysis of the calculated measures, we want to create a graphical illustration.
 
 **Task:** Press the *check*-button to use the *ggplot2* package once again to create and display bar graphs of our results. 
 ```{r "3_3___Optimal_Alloca__5"}
@@ -1136,7 +1136,7 @@ For both grandfathering and benchmarking carbon leakage risk is higher than job 
 ### ii) Sector-level optimization
 Next, we want to compare the actual risk figures for grandfathering and benchmarking with the minimized results on the sector level. Even though we are working with firm-level data in general, Martin et al. restricted their analysis to the assumption that permits can only be allocated across sectors at first. The rational behind this restriction is to recreate the constraints the EC faces when setting up exemption clauses (e.g. administrative effort or legal obstacles). These constraints were presumably a driving factor in the EC's decision to allocate permits at the sector level. Martin et al. therefore assumed that the number of permit batches allocated to a firm is proportional to its relative size in its sector (size is expressed in terms of $CO_2$ emissions under grandfathering). The sectors' resulting relocation risk is the sum of the constituent firms' relocation risk. 
 
-As already stated in Exercise 3.2, it takes some time to run the optimization program `cake()` on all firms in the data set. Therefore results from this optimization have been calculated beforehand and collected in a data frame called *optimal_sector_data*. The code that creates that data frame follows the ideas we have developed in Exercise 3.2 and can be found in the footnote of this exercise. 
+As already stated in Exercise 3.2, it takes some time to run the optimization program `cake()` on all firms in the data set. Therefore, results from this optimization have been calculated beforehand and collected in a data frame called *optimal_sector_data*. The code that creates that data frame follows the ideas we have developed in Exercise 3.2 and can be found in the footnote of this exercise. 
 
 **Task:** Hit the *check*-button to load the data frame containing the risk figures of the optimization on the sector level and assign it to the variable `optimal.sector.risk` in the code chunk below. The first rows of the data frame are displayed afterwards.
 
@@ -1415,14 +1415,14 @@ head(optimal.permits)
 The loaded firm-level data shows how many free permits a single firm (i.e. row) receives under the different allocation schemes. The number of permits actually handed out for free under *grandfathering* and *benchmarking* are taken from CITL and NIMs data bases respectively, and are displayed in the first two columns (`grandf` and `bench`). Under the constraint that total relocation risk in these two allocation schemes is not exceeded, we receive the minimal free permit allocations to each firm in columns three to six of `optimal.permits`. For each allocation scheme we calculate minimal permit numbers for both objectives, job loss ($emp$) and carbon leakage ($co2$). Optimized figures are obtained from the output vector `value` when running the `cake()` program introduced in Exercise 3.2 on a fixed grid of relocation risks (see footnote).   
 
 ### ii) Scenario analysis
-In the following we want to express the amount of permits allocated for free (i.e. the amount of $CO_2$ emitted at no cost) in the different scenarios as a percentage share of total emissions. Total emissions can be expressed as the total amount of free permits under *grandfathering*, since firms received pollution permits for all their emission for free. 
+In the following, we want to express the amount of permits allocated for free (i.e. the amount of $CO_2$ emitted at no cost) in the different scenarios as a percentage share of total emissions. Total emissions can be expressed as the total amount of free permits under *grandfathering*, since firms received pollution permits for all their emission for free. 
 
 **Task:** To calculate the amount of total emissions simply sum up the permit numbers stored under `grandf` in the data frame `optimal.permits` and assign the result to a new variable `total_emissions`. 
 ```{r "3_4___Optimal_Alloca__2"}
 
 ```
 
-In a next step we determine the percentage shares. 
+In a next step, we determine the percentage shares. 
 
 **Task:** Use the `summarise_each()` command, we encountered already in Exercise 1, to calculate all percentage shares. Provide an expression that calculates the percentage share of free permits in each scenario (i.e. each column of `optimal.cost`) with respect to the `total_emissions` figure in the brackets of `funs()`. Results are stored in the variable `optimal.shares`
 ```{r "3_4___Optimal_Alloca__3"}
@@ -1431,7 +1431,7 @@ In a next step we determine the percentage shares.
 # optimal.shares
 
 ```
-Before we analyze these results let us translate them into some expressive graphics.
+Before we analyze these results, let us translate them into some expressive graphics.
 
 ### iii) Summary and discussion
 To simplify the plot generation we store our findings in the new data frame `cost.result`.
@@ -1542,7 +1542,7 @@ $$
 \theta_i (\vec{x_i};\vec{\gamma}) = \frac{\prod_k (x_i^k)^{\gamma_k}}{\sum_{j=1}^n\prod_k (x_j^k)^{\gamma_k}}. \qquad (4.2)
 $$
 
-In the numerator of equation (4.2) we have a classical Cobb-Douglas function, where $x_i^k$ is the amount of the $k^{th}$ firm characteristic we observe at firm $i$. This firm-specific product is scaled by the sum over the Cobb-Douglas functions of all $n$ firms. One of the reasons behind the choice of this functional form can be understood by reconsidering the *grandfathering* allocation scheme. Under *grandfathering* firm $i$ received emission permits for free based on its past emissions $e_i$. Since all firms received free permits for all their emissions, one can express the amount of free permits firm $i$ received as a share of total permits: $\theta_i(e_i;\gamma_e)=\frac{e_i^{\gamma_e}}{\sum_j e_j^{\gamma_e}}$ and $\gamma_e = 1$. Restricting shares to scaled Cobb-Douglas functions is a generalization of this formulation to multiple observables. For more information on the implications of these scaled Cobb-Douglas functions have a look on the *info*-box below.
+In the numerator of equation (4.2) we have a classical Cobb-Douglas function, where $x_i^k$ is the amount of the $k^{th}$ firm characteristic we observe at firm $i$. This firm-specific product is scaled by the sum over the Cobb-Douglas functions of all $n$ firms. One of the reasons behind the choice of this functional form can be understood by reconsidering the *grandfathering* allocation scheme. Under *grandfathering* firm $i$ received emission permits for free based on its past emissions $e_i$. Since all firms received free permits for all their emissions, one can express the amount of free permits firm $i$ received as a share of total permits: $\theta_i(e_i;\gamma_e)=\frac{e_i^{\gamma_e}}{\sum_j e_j^{\gamma_e}}$ and $\gamma_e = 1$. Restricting shares to scaled Cobb-Douglas functions is a generalization of this formulation to multiple observables. For more information on the implications of these scaled Cobb-Douglas functions have a look at the *info*-box below.
 
 info("Cobb-Douglas functions") # Run this line (Strg-Enter) to show info
 
@@ -1568,9 +1568,9 @@ This data set contains firm-level information. It incorporates all the necessary
 
 info("feasible.data") # Run this line (Strg-Enter) to show info
 
-To solve this non-linear minimization problem (4.1) we will use the `optim()` function from the *stats* package. This function provides great flexibility to perform optimizations in *R*. In general the minimization takes place in two steps: First we need to declare a function that shall be minimized - in our case this will be a function that calculates aggregate relocation risk. In a second step this function is passed to the `optim()` function, which executes the actual minimization.
+To solve this non-linear minimization problem (4.1) we will use the `optim()` function from the *stats* package. This function provides great flexibility to perform optimizations in *R*. In general the minimization takes place in two steps: First, we need to declare a function that shall be minimized - in our case this will be a function that calculates aggregate relocation risk. In a second step this function is passed to the `optim()` function, which executes the actual minimization.
 
-In order to be used by any of the minimization algorithms available in `optim()`, the function to be minimized has to meet certain criteria. First, it needs to return a scalar result. In our case this is the aggregate relocation risk as specified in our minimization problem (4.1). Second, the parameter vector $\gamma$ we are solving for in the course of this optimization needs to be the first input parameter. Even though it is formally not required, we pass the data we are working on to the function as well. Following formulas (4.1) and (4.3) the aggregate risk function `total.risk()` for our first allocation rule is defined in the next code chunk. Calling the `optim()` command starts the actual optimization. In addition to the `total.risk()` function we need to pass an educated guess for $\vec{\gamma}$ as starting values, the optimization algorithm `method`, the data basis `data` and the risk weight `damage` to the optimizer. In order to solve this optimization we use a quasi-Newton algorithm developed by Broyden, Fletcher, Goldfarb, Shanno (`BFGS`), which solves non-linear optimization problems iteratively. As discussed in the *info*-box on Cobb-Douglas functions, parameters $\vec{\gamma}$ are related to the elasticities which describe how a firm's share in free permit batches changes in response to changes in the respective observable firm characteristic by one percent. It is reasonable to assume that a firm's change in the batch share is less than proportional in response to an increase in its number of employees or $CO_2$ emissions. Therefore our educated guess for the $\gamma$'s is smaller than one but greater than zero: We start with $\vec{\gamma} =\binom{0.5}{0.5}$.   
+In order to be used by any of the minimization algorithms available in `optim()`, the function to be minimized has to meet certain criteria. First, it needs to return a scalar result. In our case this is the aggregate relocation risk as specified in our minimization problem (4.1). Second, the parameter vector $\gamma$ we are solving for in the course of this optimization needs to be the first input parameter. Even though it is formally not required, we pass the data we are working on to the function as well. Following formulas (4.1) and (4.3) the aggregate risk function `total.risk()` for our first allocation rule is defined in the next code chunk. Calling the `optim()` command starts the actual optimization. In addition to the `total.risk()` function we need to pass an educated guess for $\vec{\gamma}$ as starting values, the optimization algorithm `method`, the data basis `data` and the risk weight `damage` to the optimizer. In order to solve this optimization we use a quasi-Newton algorithm developed by Broyden, Fletcher, Goldfarb, Shanno (`BFGS`), which solves non-linear optimization problems iteratively. As discussed in the *info*-box on Cobb-Douglas functions, parameters $\vec{\gamma}$ are related to the elasticities which describe how a firm's share in free permit batches changes in response to changes in the respective observable firm characteristic by one percent. It is reasonable to assume that a firm's change in the batch share is less than proportional in response to an increase in its number of employees or $CO_2$ emissions. Therefore, our educated guess for the $\gamma$'s is smaller than one but greater than zero: We start with $\vec{\gamma} =\binom{0.5}{0.5}$.   
 
 **Task:** Make yourself familiar with the code. Hit the *check*-button to execute this example. Results are stored in the variable `res` and are displayed afterwards. 
 ```{r "4_Feasible_Optimal_A__2"}
@@ -1626,7 +1626,7 @@ risk.change = data_frame(
   percentiles = c(-27.73,-10.69))
 risk.change
 ```
-Before we analyse these results let us generate a graphical representation.
+Before we analyse these results, let us generate a graphical representation.
 
 **Task:** Press the *check*-button to generate and display a bar graph which displays the results stored in `risk.change`. 
 ```{r "4_Feasible_Optimal_A__5"}
@@ -1652,7 +1652,7 @@ Figure 4.1 shows in percentage terms how job risk changes compared to the baseli
 The 95th percentiles obtained by Martin et al. via bootstrapping are marked in the graph by additional points. It can be observed that in 95 out of 100 bootstrap replications job risk is reduced by at least 10.7% compared to baseline allocations. 
 
 ### iii) A second, more extensive allocation rule
-Let us have a look on a second, more extensive allocation rule. In addition to a firm's $CO_2$ emissions $co2_i$ and number of employees $emp_i$, we base the next feasible allocation rule on the sector characteristics carbon intensity $ci_i$ and trade intensity with less developed countries $tiless_i$. Martin et al. chose trade intensity with less developed countries over total trade intensity, as they found in their accompanying paper (2014b) that trade intensity with less developed countries to be stronger correlated with the VS. The risk share function then becomes:
+Let us have a look at a second, more extensive allocation rule. In addition to a firm's $CO_2$ emissions $co2_i$ and number of employees $emp_i$, we base the next feasible allocation rule on the sector characteristics carbon intensity $ci_i$ and trade intensity with less developed countries $tiless_i$. Martin et al. chose trade intensity with less developed countries over total trade intensity, as they found in their accompanying paper (2014b) that trade intensity with less developed countries to be stronger correlated with the VS. The risk share function then becomes:
 $$
 \theta_i(\vec{x_i};\vec{\gamma}) = \frac{ co2_i^{\gamma_{co2}}\cdot emp_i^{\gamma_{emp}}\cdot ci_i^{\gamma_{ci}}\cdot tiless_i^{\gamma_{tiless}}}{\sum_{j=1}^n co2_j^{\gamma_{co2}}\cdot emp_j^{\gamma_{emp}}\cdot ci_j^{\gamma_{ci}}\cdot tiless_j^{\gamma_{tiless}}}. \qquad (4.5)
 $$
@@ -1691,7 +1691,7 @@ Equation (4.6) shows that past $CO_2$ emissions of a firm still have the highest
 
 ```
 
-We find that the share of jobs at risk to be relocated to an unregulated country amounts to 4.5% when this second more extensive allocation rule is applied.
+We find that the share of jobs at risk to be relocated to an unregulated country amounts to 4.5% when this second, more extensive allocation rule is applied.
 
 **Task:** Press the *check*-button to add a new row to the data frame `risk.change` that contains the percentage changes in baseline job risk when instead of benchmarking allocations the second simple allocation is applied, and to display the collected results in a bar graph.
 ```{r "4_Feasible_Optimal_A__9"}
