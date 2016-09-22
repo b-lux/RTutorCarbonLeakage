@@ -1870,7 +1870,7 @@ The simulations reveal that optimal allocations on both the sector and the firm 
 *The optimization results and the associated discussions developed in this exercise can be found on pages 2501-2502 of the paper.* 
 
 #! start_note "Data Preparation Exercise 3.3"
-Be advised: Running the code in the chunks below takes a long time (possibly hours)!
+Note: The code provided below does not run in the framework of this problemset, because the function `cake()` is not loaded in this exercise. The code has illustrative purpose only. Running the code in the chunks below outside this problemset takes a long time (possibly hours)!
 
 The code provided in the code chunk below creates the firm-level optimization results presented in Exercise 3.3 (the ordering of the firms differs however). The function `data.prep.firm()` initialized in the code chunk below, is called in the data preparation process for the dual optimization in Exercise 3.4 too. It is therefore defined in more general terms than necessary for the data preparation of the firm risk optimization.
 ```{r "2_2_6",optional = TRUE, eval=F}
@@ -2163,7 +2163,7 @@ The largest spread between actual and optimal allocation can be observed when it
 *The optimization results and the associated discussions developed in this exercise can be found on pages 2502-2503 of the paper.*
 
 #! start_note "Data Preparation - Minimizing Cost"
-Be advised: Running the code in the chunk below takes a long time (possibly hours)!
+Note: The code provided below does not run in the framework of this problemset, because the functions `cake()` and `data.prep.firm()` are not loaded in this exercise. The code has illustrative purpose only. Running the code in the chunks below outside this problemset takes a long time (possibly hours)!
 
 The code provided in the code chunk below creates the firm-level optimization results presented above (the ordering of the firms differs however).
 ```{r "2_3 6",optional = TRUE,eval=F}
