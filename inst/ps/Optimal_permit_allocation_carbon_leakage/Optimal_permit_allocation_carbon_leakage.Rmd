@@ -1666,7 +1666,7 @@ For this allocation rule we want to minimize total job risk again.
 #   theta = theta/sum(theta)
 #   b.bar = sum(data[,"bench"])
 #   b = theta*b.bar
-#   return(sum(risk(data, q, damage)))
+#   return(sum(risk(data, b, damage)))
 # }
 
 # Call optimizer
